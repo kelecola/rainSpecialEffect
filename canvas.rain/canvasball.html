@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas碰撞球</title>
+    <style>
+        body{margin: 0;}
+        canvas{
+            display: block;
+            background-color: wheat;
+        }
+    </style>
+</head>
+<body>
+<canvas class="bubble"></canvas>
+<script>
+    var canvas=document.querySelector(".bubble");
+    var w,h;
+    var aColor=["#e1512d","#d8437e","00ffff","BC74F1","62F1A4","F1BE48","F1936A","F17827"];
+    var aBall=[];
+    function random(min,max) {
+        return Math.random()*(max-min)+min;
+    }
+    ~~function setSize() {
+        window.onresize=arguments.callee;
+        w=window.innerWidth;
+        h=window.innerHeight;
+        canvas.width=w;
+        canvas.height=h;
+    }();
+    var canCon=canvas.getContext("2d");
+    function Ball() {};
+    Ball.prototype={
+        init:function () {
+            this.x=random(0,w);
+            this.y=random(0,h);
+            this.r=random(1,5);
+            this.color=aColor[Math.floor(random(0,9))];
+            this.vX=random(-1,1);
+            this.vY=random(-1,1);
+        },
+        draw:function () {
+            canCon.beginPath();
+            canCon.fillStyle=this.color;
+            canCon.arc(this.x,this.y,this.r,0,Math.PI*2);
+            canCon.fill();
+        },
+        move:function () {
+            this.x+=this.vX;
+            this.y+=this.vY;
+            this.draw();
+        }
+    }
+    function createBall(num) {
+        for(var i=0;i<num;i++){
+            setTimeout(function () {
+                var ball=new Ball();
+                ball.init();
+                ball.draw();
+                aBall.push(ball);
+            },200*i)
+        }
+    }
+    createBall(888);
+    setInterval(function () {
+        /*canCon.fillStyle="rgba(0,0,0,0.05)";
+        canCon.fillRect(0,0,w,h);*/
+        canCon.clearRect(0,0,w,h);
+        for (var item of aBall){
+            item.move();
+        }
+    },1000/60)
+</script>
+</body>
+</html>

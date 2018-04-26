@@ -1,0 +1,7 @@
+body{
+margin: 0;padding: 0;
+}
+canvas{  /*canvas是行内元素有行间距*/
+    display: block;
+    background-color: black;
+}
